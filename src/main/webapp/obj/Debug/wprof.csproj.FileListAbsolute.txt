@@ -1,0 +1,7 @@
+C:\prj\dew\wprof\src\main\webapp\bin\TypeScriptHTMLApp1.dll.config
+C:\prj\dew\wprof\src\main\webapp\bin\TypeScriptHTMLApp1.dll
+C:\prj\dew\wprof\src\main\webapp\bin\TypeScriptHTMLApp1.pdb
+C:\prj\dew\wprof\src\main\webapp\obj\Debug\wprof.csprojAssemblyReference.cache
+C:\prj\dew\wprof\src\main\webapp\obj\Debug\wprof.csproj.CoreCompileInputs.cache
+C:\prj\dew\wprof\src\main\webapp\obj\Debug\TypeScriptHTMLApp1.dll
+C:\prj\dew\wprof\src\main\webapp\obj\Debug\TypeScriptHTMLApp1.pdb

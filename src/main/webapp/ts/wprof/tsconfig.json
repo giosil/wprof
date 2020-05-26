@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es5",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "../../wux/js/wprof.js",
+        "sourceMap": true
+    },
+    "include": [
+        "../types/**/*",
+        "../../wux/js/wux.d.ts",
+        "*"
+    ]
+}
