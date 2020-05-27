@@ -67,6 +67,29 @@
             }
         }
 
+        onClickChart(h: (e: WEvent) => any): void {
+            if (!h) return;
+            if (!this.handlers['_click']) this.handlers['_click'] = [];
+            this.handlers['_click'].push(h);
+        }
+
+        getLabel(e: WUX.WEvent): string {
+            if (!this.state) return '';
+            if (!e || !e.data) return '';
+            let di = e.data.split('_');
+            let i = WUtil.toNumber(di[di.length - 1]);
+            return WUtil.toString(this.state.labels[i]);
+        }
+
+        getValue(e: WUX.WEvent): number {
+            if (!this.state) return 0;
+            if (!e || !e.data) return 0;
+            let di = e.data.split('_');
+            let d = di.length > 1 ? WUtil.toNumber(di[0]) : 0;
+            let i = WUtil.toNumber(di[di.length - 1]);
+            return this.state.series[d][i];
+        }
+
         protected componentDidMount(): void {
             if (this._tooltip) {
                 this.root.attr('title', this._tooltip);
@@ -100,6 +123,13 @@
                 this._options = {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: (e: MouseEvent, a: any) => {
+                        let p = this.chart.getElementAtEvent(e) as any[];
+                        if (!p || !p.length) return;
+                        let d = WUtil.getString(p[0], '_datasetIndex', '');
+                        let i = WUtil.getString(p[0], '_index', '');
+                        this.trigger('_click', d + '_' + i);
+                    },
                     legend: {
                         display: this.legend
                     }

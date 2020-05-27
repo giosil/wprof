@@ -2,6 +2,56 @@
 
     import WUtil = WUX.WUtil;
 
+    export class DlgEvents extends WUX.WDialog<string, number> {
+        lblLab: WUX.WLabel;
+        lblVal: WUX.WLabel;
+        tabEvn: WUX.WTable;
+
+        constructor(id: string) {
+            super(id, 'DlgEvents');
+
+            this.lblLab = new WUX.WLabel(this.subId('ll'), '', '', '', WUX.CSS.LABEL_INFO);
+            this.lblVal = new WUX.WLabel(this.subId('lv'), '', '', '', WUX.CSS.LABEL_NOTICE);
+
+            this.tabEvn = new WUX.WTable(this.subId('te'),
+                ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'],
+                ['d', 't', 'a', 'c', 'm', 'e', 's', 'x']
+            );
+            this.tabEvn.selectionMode = 'single';
+
+
+            this.body
+                .addRow()
+                .addCol('12', { a: 'right' })
+                .add(this.lblLab)
+                .addRow()
+                .addCol('12', { a: 'right' })
+                .add(this.lblVal)
+                .addRow()
+                .addCol('12').section('Events')
+                .add(this.tabEvn);
+        }
+
+        protected updateProps(nextProps: string): void {
+            super.updateProps(nextProps);
+            if (!this.lblLab) return;
+            this.lblLab.setState(this.props);
+        }
+
+        protected updateState(nextState: number): void {
+            super.updateState(nextState);
+            if (!this.state) this.state = 0;
+            if (!this.lblVal) return;
+            this.lblVal.setState('' + this.state);
+        }
+
+        setEvents(d: EventData[]) {
+            if (!d) d = [];
+            if (!this.tabEvn) return;
+            this.tabEvn.setState(d);
+        }
+    }
+
     export class GUIAnalyze extends WUX.WComponent<string, WProfData> {
         cnt: WUX.WContainer;
         sel: WUX.WSelect;
@@ -10,9 +60,16 @@
         chr: WUX.WChartJS;
         tbl: WUX.WTable;
 
+        dlg: DlgEvents;
+
         constructor(id?: string) {
             super(id ? id : '*', 'GUIAnalyze', '');
             this.state = WP.getData();
+
+            this.dlg = new DlgEvents(this.subId('dlg'));
+            this.dlg.onHiddenModal((e: JQueryEventObject) => {
+                $(window).scrollTop(0);
+            });
         }
 
         protected render() {
@@ -51,6 +108,18 @@
 
             this.chr = new WUX.WChartJS(this.subId('chr'), 'line');
             this.chr.setState(this.getChartData());
+            this.chr.onClickChart((e: WUX.WEvent) => {
+                let l = this.chr.getLabel(e);
+                let v = this.chr.getValue(e);
+
+                this.dlg.setProps(l);
+                this.dlg.setState(v);
+                this.dlg.setEvents(this.getEvents(l, 500));
+
+                setTimeout(() => {
+                    this.dlg.show(this);
+                }, 500);
+            });
 
             this.tbl = new WUX.WTable(this.subId('tbl'),
                 ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'],
@@ -114,6 +183,27 @@
             r.series = series;
 
             return r;
+        }
+
+        protected getEvents(d: string, max?: number): EventData[] {
+            if (!this.state || !this.state.evn) return [];
+            if (!max) max = 100;
+
+            let l = this.state.evn.length;
+            if (l == 0) return [];
+
+            let e = -1;
+            for (let i = 0; i < l; i++) {
+                if (this.state.evn[i].d >= d) {
+                    e = i;
+                    break;
+                }
+            }
+            if (e < 0) e = l - 1;
+
+            let s = e - max;
+            if (s < 0) s = 0;
+            return this.state.evn.slice(s, e);
         }
     }
 

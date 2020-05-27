@@ -14,11 +14,59 @@ var __extends = (this && this.__extends) || (function () {
 var WP;
 (function (WP) {
     var WUtil = WUX.WUtil;
+    var DlgEvents = (function (_super) {
+        __extends(DlgEvents, _super);
+        function DlgEvents(id) {
+            var _this = _super.call(this, id, 'DlgEvents') || this;
+            _this.lblLab = new WUX.WLabel(_this.subId('ll'), '', '', '', WUX.CSS.LABEL_INFO);
+            _this.lblVal = new WUX.WLabel(_this.subId('lv'), '', '', '', WUX.CSS.LABEL_NOTICE);
+            _this.tabEvn = new WUX.WTable(_this.subId('te'), ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'], ['d', 't', 'a', 'c', 'm', 'e', 's', 'x']);
+            _this.tabEvn.selectionMode = 'single';
+            _this.body
+                .addRow()
+                .addCol('12', { a: 'right' })
+                .add(_this.lblLab)
+                .addRow()
+                .addCol('12', { a: 'right' })
+                .add(_this.lblVal)
+                .addRow()
+                .addCol('12').section('Events')
+                .add(_this.tabEvn);
+            return _this;
+        }
+        DlgEvents.prototype.updateProps = function (nextProps) {
+            _super.prototype.updateProps.call(this, nextProps);
+            if (!this.lblLab)
+                return;
+            this.lblLab.setState(this.props);
+        };
+        DlgEvents.prototype.updateState = function (nextState) {
+            _super.prototype.updateState.call(this, nextState);
+            if (!this.state)
+                this.state = 0;
+            if (!this.lblVal)
+                return;
+            this.lblVal.setState('' + this.state);
+        };
+        DlgEvents.prototype.setEvents = function (d) {
+            if (!d)
+                d = [];
+            if (!this.tabEvn)
+                return;
+            this.tabEvn.setState(d);
+        };
+        return DlgEvents;
+    }(WUX.WDialog));
+    WP.DlgEvents = DlgEvents;
     var GUIAnalyze = (function (_super) {
         __extends(GUIAnalyze, _super);
         function GUIAnalyze(id) {
             var _this = _super.call(this, id ? id : '*', 'GUIAnalyze', '') || this;
             _this.state = WP.getData();
+            _this.dlg = new DlgEvents(_this.subId('dlg'));
+            _this.dlg.onHiddenModal(function (e) {
+                $(window).scrollTop(0);
+            });
             return _this;
         }
         GUIAnalyze.prototype.render = function () {
@@ -54,6 +102,16 @@ var WP;
             this.lbl = new WUX.WLabel(this.subId('lbl'), this.state.msg, WUX.WIcon.WARNING, '', WUX.CSS.LABEL_NOTICE);
             this.chr = new WUX.WChartJS(this.subId('chr'), 'line');
             this.chr.setState(this.getChartData());
+            this.chr.onClickChart(function (e) {
+                var l = _this.chr.getLabel(e);
+                var v = _this.chr.getValue(e);
+                _this.dlg.setProps(l);
+                _this.dlg.setState(v);
+                _this.dlg.setEvents(_this.getEvents(l, 500));
+                setTimeout(function () {
+                    _this.dlg.show(_this);
+                }, 500);
+            });
             this.tbl = new WUX.WTable(this.subId('tbl'), ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'], ['d', 't', 'a', 'c', 'm', 'e', 's', 'x']);
             this.tbl.selectionMode = 'single';
             this.tbl.setState(this.state.evn);
@@ -107,6 +165,28 @@ var WP;
             r.labels = labels;
             r.series = series;
             return r;
+        };
+        GUIAnalyze.prototype.getEvents = function (d, max) {
+            if (!this.state || !this.state.evn)
+                return [];
+            if (!max)
+                max = 100;
+            var l = this.state.evn.length;
+            if (l == 0)
+                return [];
+            var e = -1;
+            for (var i = 0; i < l; i++) {
+                if (this.state.evn[i].d >= d) {
+                    e = i;
+                    break;
+                }
+            }
+            if (e < 0)
+                e = l - 1;
+            var s = e - max;
+            if (s < 0)
+                s = 0;
+            return this.state.evn.slice(s, e);
         };
         return GUIAnalyze;
     }(WUX.WComponent));
