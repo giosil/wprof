@@ -6,7 +6,7 @@ namespace WP {
             if (!d.sys) d.sys = [];
             if (!d.jvm) d.jvm = [];
             if (!d.evn) d.evn = [];
-            return __data;
+            return d;
         }
         return {
             sys: [],
