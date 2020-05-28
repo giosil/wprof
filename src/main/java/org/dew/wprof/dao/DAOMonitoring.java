@@ -3,7 +3,7 @@ package org.dew.wprof.dao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +61,7 @@ class DAOMonitoring
     MAP_LAYOUTS.put("jvm", MAP_JVM);
     MAP_LAYOUTS.put("evn", MAP_EVN);
   }
-
+  
   public 
   List<List<Object>> loadSysData(Map<String, Object> filter)
     throws Exception
@@ -124,7 +124,7 @@ class DAOMonitoring
     }
     
     Object  filterDateTime = filter.get("d");
-    String sFilterDateTime = filterDateTime != null ? filterDateTime.toString() : "";
+    String sFilterDateTime = filterDateTime != null ? filterDateTime.toString() : null;
     
     int ext = fileName.lastIndexOf('.');
     int sep = fileName.lastIndexOf('_');
@@ -280,11 +280,9 @@ class DAOMonitoring
   File checkFile(String fileName)
   {
     File file = new File(FOLDER_PATH + fileName);
-    
     if(file.exists()) {
       return file;
     }
-    
     return null;
   }
   
@@ -295,8 +293,10 @@ class DAOMonitoring
   }
   
   protected static 
-  class FInfo
+  class FInfo implements Serializable
   {
+    private static final long serialVersionUID = 1937128145502235421L;
+    
     private String name;
     private FType  type;
     

@@ -50,6 +50,10 @@ A simple profiler and monitoring webapp.
 - `docker run --rm -it -p 8080:8080 --name=cwprof wprof` - To run image named wprof (container named cwprof)
 - `docker exec -it cwprof bash` - To connect to the container CTRL+Z to exit
 
+## Run on http://localhost:8080/wprof
+
+![WProf](screen.jpg)
+
 ## Contributors
 
 * [Giorgio Silvestris](https://github.com/giosil)

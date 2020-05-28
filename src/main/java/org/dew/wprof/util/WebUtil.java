@@ -45,10 +45,48 @@ class WebUtil
     }
     
     if(result instanceof String) {
-      return (String) defaultValue;
+      return (String) result;
     }
     
     return result.toString();
+  }
+  
+  public static
+  Integer getIntegerAttribute(HttpServletRequest request, String name, Integer defaultValue)
+  {
+    Object result = request.getAttribute(name);
+    
+    if(result == null) {
+      return defaultValue;
+    }
+    
+    if(result instanceof Integer) {
+      return (Integer) result;
+    }
+    else if(result instanceof Number) {
+      return new Integer(((Number) result).intValue());
+    }
+    
+    return defaultValue;
+  }
+  
+  public static
+  Double getDoubleAttribute(HttpServletRequest request, String name, Double defaultValue)
+  {
+    Object result = request.getAttribute(name);
+    
+    if(result == null) {
+      return defaultValue;
+    }
+    
+    if(result instanceof Double) {
+      return (Double) result;
+    }
+    else if(result instanceof Number) {
+      return new Double(((Number) result).doubleValue());
+    }
+    
+    return defaultValue;
   }
   
   public static
@@ -61,7 +99,7 @@ class WebUtil
       String sParameterName  = enumeration.nextElement();
       String sParameterValue = request.getParameter(sParameterName);
       
-      if(Character.isDigit(sParameterName.charAt(0))) {
+      if(Character.isDigit(sParameterName.charAt(0)) && Character.isDigit(sParameterName.charAt(sParameterName.length()-1))) {
         if(sParameterValue == null || sParameterValue.length() == 0) {
           continue;
         }
@@ -102,7 +140,27 @@ class WebUtil
       out.write("<span" + i + c + s + ">" + html(text) + "</span>");
     }
     catch(Exception ex) {
-      
+      ex.printStackTrace();
+    }
+  }
+  
+  public static
+  void printDiv(final Writer out, final String inner, final String tagId, final String tagClass, String tagStyle)
+  {
+    String i = tagId    != null && tagId.length()    > 0 ? " id=\""    + tagId    + "\"" : "";
+    String c = tagClass != null && tagClass.length() > 0 ? " class=\"" + tagClass + "\"" : "";
+    String s = tagStyle != null && tagStyle.length() > 0 ? " style=\"" + tagStyle + "\"" : "";
+    
+    try {
+      if(inner == null) {
+        out.write("<div" + i + c + s + "></div>");
+      }
+      else {
+        out.write("<div" + i + c + s + ">" + inner + "</div>");
+      }
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
     }
   }
   

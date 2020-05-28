@@ -22,13 +22,11 @@ import java.lang.management.*;
 public 
 class WMonitoring implements IMonitoring 
 {
-
   @Override
   public 
   Map<String, Object> view() 
     throws Exception
   {
-    
     Map<String, Object> mapResult = new TreeMap<String, Object>();
     
     // Memory Usage

@@ -26,8 +26,12 @@ class TimerTaskRecorder extends TimerTask
   
   public static final String JVM_FILE_PATH = DATA_FOLDER + File.separator + "wprof_jvm.csv";
   public static final String SYS_FILE_PATH = DATA_FOLDER + File.separator + "wprof_sys.csv";
+  public static final String EVN_FILE_PATH = DATA_FOLDER + File.separator + "wprof_evn.csv";
+  
   public static final String WIN_BATCH     = DATA_FOLDER + File.separator + "wprof.cmd";
   public static final String LINUX_BATCH   = DATA_FOLDER + File.separator + "wprof.sh";
+  
+  public static long lRetentionThreshold   = System.currentTimeMillis();
   
   protected transient boolean running = false;
   
@@ -42,6 +46,14 @@ class TimerTaskRecorder extends TimerTask
       
       init();
       
+    }
+    else {
+      long currentTimeMillis = System.currentTimeMillis();
+      if(currentTimeMillis > lRetentionThreshold) {
+        
+        init();
+        
+      }
     }
     
     try {
@@ -248,6 +260,10 @@ class TimerTaskRecorder extends TimerTask
     calToday.set(Calendar.MILLISECOND, 0);
     
     long lToday = calToday.getTimeInMillis();
+    
+    calToday.add(Calendar.DATE, 1);
+    
+    lRetentionThreshold = calToday.getTimeInMillis() - 1;
     
     try {
       File fileSys = new File(SYS_FILE_PATH);
