@@ -1,48 +1,25 @@
 declare namespace WP {
     function getData(): WProfData;
-    interface SysData {
-        d?: string;
-        cup?: number;
-        mup?: number;
-        dup?: number;
-    }
-    interface JvmData {
-        d?: string;
-        msu?: number;
-        msm?: number;
-        heu?: number;
-        hem?: number;
-        hsu?: number;
-        hsm?: number;
-        htu?: number;
-        htm?: number;
-        ccu?: number;
-        ccm?: number;
-        lcc?: number;
-        tlc?: number;
-        ucc?: number;
-        ttc?: number;
-        ptc?: number;
-        stc?: number;
-    }
-    interface EventData {
-        d?: string;
-        t?: "a" | "e" | "x" | "i" | "r";
-        a?: string;
-        c?: string;
-        m?: string;
-        e?: number;
-        s?: number;
-        x?: string;
-    }
     interface WProfData {
-        sys?: SysData[];
-        jvm?: JvmData[];
-        evn?: EventData[];
+        sys?: any[];
+        sys_fields?: string[];
+        jvm?: any[];
+        jvm_fields?: string[];
+        evn?: any[];
+        evn_fields?: string[];
         msg?: string;
     }
 }
 declare namespace WP {
+    class DlgEvents extends WUX.WDialog<string, number> {
+        lblLab: WUX.WLabel;
+        lblVal: WUX.WLabel;
+        tabEvn: WUX.WTable;
+        constructor(id: string);
+        protected updateProps(nextProps: string): void;
+        protected updateState(nextState: number): void;
+        setEvents(d: any[]): void;
+    }
     class GUIAnalyze extends WUX.WComponent<string, WProfData> {
         cnt: WUX.WContainer;
         sel: WUX.WSelect;
@@ -50,9 +27,12 @@ declare namespace WP {
         lbl: WUX.WLabel;
         chr: WUX.WChartJS;
         tbl: WUX.WTable;
+        title: string;
+        dlg: DlgEvents;
         constructor(id?: string);
         protected render(): WUX.WContainer;
         protected updateProps(nextProps: string): void;
         protected getChartData(): WUX.WChartData;
+        protected getEvents(d: string, max?: number): any[];
     }
 }

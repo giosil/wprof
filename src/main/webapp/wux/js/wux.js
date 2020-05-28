@@ -3214,6 +3214,32 @@ var WUX;
             enumerable: true,
             configurable: true
         });
+        WChartJS.prototype.onClickChart = function (h) {
+            if (!h)
+                return;
+            if (!this.handlers['_click'])
+                this.handlers['_click'] = [];
+            this.handlers['_click'].push(h);
+        };
+        WChartJS.prototype.getLabel = function (e) {
+            if (!this.state)
+                return '';
+            if (!e || !e.data)
+                return '';
+            var di = e.data.split('_');
+            var i = WUX.WUtil.toNumber(di[di.length - 1]);
+            return WUX.WUtil.toString(this.state.labels[i]);
+        };
+        WChartJS.prototype.getValue = function (e) {
+            if (!this.state)
+                return 0;
+            if (!e || !e.data)
+                return 0;
+            var di = e.data.split('_');
+            var d = di.length > 1 ? WUX.WUtil.toNumber(di[0]) : 0;
+            var i = WUX.WUtil.toNumber(di[di.length - 1]);
+            return this.state.series[d][i];
+        };
         WChartJS.prototype.componentDidMount = function () {
             if (this._tooltip) {
                 this.root.attr('title', this._tooltip);
@@ -3223,6 +3249,7 @@ var WUX;
             }
         };
         WChartJS.prototype.buildChart = function () {
+            var _this = this;
             if (!this.state || !this.root)
                 return;
             if (!this.state.labels)
@@ -3246,6 +3273,14 @@ var WUX;
                 this._options = {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: function (e, a) {
+                        var p = _this.chart.getElementAtEvent(e);
+                        if (!p || !p.length)
+                            return;
+                        var d = WUX.WUtil.getString(p[0], '_datasetIndex', '');
+                        var i = WUX.WUtil.getString(p[0], '_index', '');
+                        _this.trigger('_click', d + '_' + i);
+                    },
                     legend: {
                         display: this.legend
                     }

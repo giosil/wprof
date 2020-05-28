@@ -73,10 +73,11 @@ class WMonitoring implements IMonitoring
     try {
       DAOMonitoring daoMonitoring = new DAOMonitoring();
       
-      mapResult.put("sys", daoMonitoring.findSysData(filter));
-      mapResult.put("jvm", daoMonitoring.findJVMData(filter));
-      mapResult.put("evn", daoMonitoring.findEventsData(filter));
+      mapResult.put("sys", daoMonitoring.loadSysData(filter));
+      mapResult.put("jvm", daoMonitoring.loadJVMData(filter));
+      mapResult.put("evn", daoMonitoring.loadEventsData(filter));
       
+      mapResult.putAll(daoMonitoring.layouts());
     }
     catch(Exception ex) {
       ex.printStackTrace();

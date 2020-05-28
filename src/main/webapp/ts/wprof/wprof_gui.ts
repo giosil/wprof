@@ -10,15 +10,15 @@
         constructor(id: string) {
             super(id, 'DlgEvents');
 
+            this.title = 'Events';
+
             this.lblLab = new WUX.WLabel(this.subId('ll'), '', '', '', WUX.CSS.LABEL_INFO);
             this.lblVal = new WUX.WLabel(this.subId('lv'), '', '', '', WUX.CSS.LABEL_NOTICE);
 
             this.tabEvn = new WUX.WTable(this.subId('te'),
-                ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'],
-                ['d', 't', 'a', 'c', 'm', 'e', 's', 'x']
+                ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception']
             );
             this.tabEvn.selectionMode = 'single';
-
 
             this.body
                 .addRow()
@@ -42,10 +42,15 @@
             super.updateState(nextState);
             if (!this.state) this.state = 0;
             if (!this.lblVal) return;
-            this.lblVal.setState('' + this.state);
+            if (this._title && this._title.indexOf('perc') >= 0) {
+                this.lblVal.setState('' + this.state + ' %');
+            }
+            else {
+                this.lblVal.setState('' + this.state);
+            }
         }
 
-        setEvents(d: EventData[]) {
+        setEvents(d: any[]) {
             if (!d) d = [];
             if (!this.tabEvn) return;
             this.tabEvn.setState(d);
@@ -60,6 +65,7 @@
         chr: WUX.WChartJS;
         tbl: WUX.WTable;
 
+        title: string;
         dlg: DlgEvents;
 
         constructor(id?: string) {
@@ -73,28 +79,33 @@
         }
 
         protected render() {
-            if (!this.state) this.state = { msg: "No data", evn: [], sys: [], jvm: [] };
-            if (!this.props) this.props = 'sys_cup';
 
             let opt = new Array<WUX.WEntity>();
-            opt.push({ id: 'sys_cup', text: 'CPU usage percentage' });
-            opt.push({ id: 'sys_mup', text: 'Memory usage percentage' });
-            opt.push({ id: 'sys_dup', text: 'Disk usage percentage' });
+            opt.push({ id: 'sys_1', text: 'CPU usage percentage' });
+            opt.push({ id: 'sys_2', text: 'Memory usage percentage' });
+            opt.push({ id: 'sys_3', text: 'Disk usage percentage' });
 
-            opt.push({ id: 'jvm_msu', text: 'Metaspace usage' });
-            opt.push({ id: 'jvm_heu', text: 'Heap Eden usage' });
-            opt.push({ id: 'jvm_hsu', text: 'Heap Survivor usage' });
-            opt.push({ id: 'jvm_htu', text: 'Heap Tenured usage' });
-            opt.push({ id: 'jvm_ccu', text: 'Code Cache usage' });
-            opt.push({ id: 'jvm_lcc', text: 'Loaded Class count' });
-            opt.push({ id: 'jvm_tlc', text: 'Total Loaded class count' });
-            opt.push({ id: 'jvm_ucc', text: 'Unloaded class count' });
-            opt.push({ id: 'jvm_ttc', text: 'Thread count' });
-            opt.push({ id: 'jvm_ptc', text: 'Peak Thread count' });
-            opt.push({ id: 'jvm_stc', text: 'Total Started Thread count' });
+            opt.push({ id: 'jvm_1', text: 'Metaspace used' });
+            opt.push({ id: 'jvm_3', text: 'Heap Eden used' });
+            opt.push({ id: 'jvm_5', text: 'Heap Survivor used' });
+            opt.push({ id: 'jvm_7', text: 'Heap Tenured used' });
+            opt.push({ id: 'jvm_9', text: 'Code Cache used' });
+            opt.push({ id: 'jvm_11', text: 'Loaded Class count' });
+            opt.push({ id: 'jvm_12', text: 'Total Loaded class count' });
+            opt.push({ id: 'jvm_13', text: 'Unloaded class count' });
+            opt.push({ id: 'jvm_14', text: 'Thread count' });
+            opt.push({ id: 'jvm_15', text: 'Peak Thread count' });
+            opt.push({ id: 'jvm_16', text: 'Total Started Thread count' });
+
+            if (!this.state) this.state = { msg: "No data", evn: [], sys: [], jvm: [] };
+            if (!this.props) {
+                this.props = opt[0].id;
+                this.title = opt[0].text;
+            }
 
             this.sel = new WUX.WSelect('sel', opt);
             this.sel.on('statechange', (e: WUX.WEvent) => {
+                this.title = this.sel.getProps();
                 this.updateProps(this.sel.getState());
             });
 
@@ -112,6 +123,8 @@
                 let l = this.chr.getLabel(e);
                 let v = this.chr.getValue(e);
 
+                if (!this.title) this.title = 'Events';
+                this.dlg.title = this.title;
                 this.dlg.setProps(l);
                 this.dlg.setState(v);
                 this.dlg.setEvents(this.getEvents(l, 500));
@@ -123,7 +136,6 @@
 
             this.tbl = new WUX.WTable(this.subId('tbl'),
                 ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'],
-                ['d', 't', 'a', 'c', 'm', 'e', 's', 'x']
             );
             this.tbl.selectionMode = 'single';
             this.tbl.setState(this.state.evn);
@@ -159,20 +171,19 @@
         protected getChartData() {
             let r: WUX.WChartData = {};
 
-            if (!this.props) this.props = 'sys_cup';
-
             let df = this.props.split('_');
             if (!df || df.length < 2) return r;
             let a = WUtil.toArray(this.state[df[0]]);
             if (!a || !a.length) return r;
+            let y = WUtil.toNumber(df[1]);
 
             let labels = [];
             let series = [];
             let values = [];
             for (let i = 0; i < a.length; i++) {
                 let o = a[i];
-                let l = WUtil.toString(o['d']);
-                let v = WUtil.toNumber(o[df[1]]);
+                let l = WUtil.toString(o[0]);
+                let v = o[y];
 
                 labels.push(l);
                 values.push(v);
@@ -185,7 +196,7 @@
             return r;
         }
 
-        protected getEvents(d: string, max?: number): EventData[] {
+        protected getEvents(d: string, max?: number): any[] {
             if (!this.state || !this.state.evn) return [];
             if (!max) max = 100;
 
@@ -194,7 +205,7 @@
 
             let e = -1;
             for (let i = 0; i < l; i++) {
-                if (this.state.evn[i].d >= d) {
+                if (this.state.evn[i][0] >= d) {
                     e = i;
                     break;
                 }

@@ -3,9 +3,9 @@ package org.dew.wprof.dao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,43 +16,43 @@ class DAOMonitoring
   
   public static final Map<Integer, FInfo> MAP_SYS = new HashMap<Integer, FInfo>();
   static {
-    MAP_SYS.put(0, new FInfo("d",   FType.DATE));      // Date time
-    MAP_SYS.put(1, new FInfo("cup", FType.DOUBLE));    // CPU usage percentage
-    MAP_SYS.put(2, new FInfo("mup", FType.DOUBLE));    // Memory usage percentage
-    MAP_SYS.put(3, new FInfo("dup", FType.DOUBLE));    // Disk usage percentage
+    MAP_SYS.put(0, new FInfo("d",   FType.DATE));      //  0 Date time
+    MAP_SYS.put(1, new FInfo("cup", FType.DOUBLE));    //  1 CPU usage percentage
+    MAP_SYS.put(2, new FInfo("mup", FType.DOUBLE));    //  2 Memory usage percentage
+    MAP_SYS.put(3, new FInfo("dup", FType.DOUBLE));    //  3 Disk usage percentage
   }
   
   public static final Map<Integer, FInfo> MAP_JVM = new HashMap<Integer, FInfo>();
   static {
-    MAP_JVM.put(0,  new FInfo("d",   FType.DATE));     // Date time
-    MAP_JVM.put(1,  new FInfo("msu", FType.INTEGER));  // METASPACE_USED
-    MAP_JVM.put(2,  new FInfo("msm", FType.INTEGER));  // METASPACE_MAX
-    MAP_JVM.put(3,  new FInfo("heu", FType.INTEGER));  // HEAP_EDEN_USED
-    MAP_JVM.put(4,  new FInfo("hem", FType.INTEGER));  // HEAP_EDEN_MAX
-    MAP_JVM.put(5,  new FInfo("hsu", FType.INTEGER));  // HEAP_SURVIVOR_USED
-    MAP_JVM.put(6,  new FInfo("hsm", FType.INTEGER));  // HEAP_SURVIVOR_MAX
-    MAP_JVM.put(7,  new FInfo("htu", FType.INTEGER));  // HEAP_TENURED_USED
-    MAP_JVM.put(8,  new FInfo("htm", FType.INTEGER));  // HEAP_TENURED_MAX
-    MAP_JVM.put(9,  new FInfo("ccu", FType.INTEGER));  // CODE_CACHE_USED
-    MAP_JVM.put(10, new FInfo("ccm", FType.INTEGER));  // CODE_CACHE_MAX
-    MAP_JVM.put(11, new FInfo("lcc", FType.INTEGER));  // LOADED_CLASS_COUNT
-    MAP_JVM.put(12, new FInfo("tlc", FType.INTEGER));  // TOTAL_LOADED_CLASS_COUNT
-    MAP_JVM.put(13, new FInfo("ucc", FType.INTEGER));  // UNLOADED_CLASS_COUNT
-    MAP_JVM.put(14, new FInfo("ttc", FType.INTEGER));  // THREAD_COUNT
-    MAP_JVM.put(15, new FInfo("ptc", FType.INTEGER));  // PEAK_THREAD_COUNT
-    MAP_JVM.put(16, new FInfo("stc", FType.INTEGER));  // TOTAL_STARTED_THREAD_COUNT
+    MAP_JVM.put(0,  new FInfo("d",   FType.DATE));     //  0 Date time
+    MAP_JVM.put(1,  new FInfo("msu", FType.INTEGER));  //  1 METASPACE_USED
+    MAP_JVM.put(2,  new FInfo("msm", FType.INTEGER));  //  2 METASPACE_MAX
+    MAP_JVM.put(3,  new FInfo("heu", FType.INTEGER));  //  3 HEAP_EDEN_USED
+    MAP_JVM.put(4,  new FInfo("hem", FType.INTEGER));  //  4 HEAP_EDEN_MAX
+    MAP_JVM.put(5,  new FInfo("hsu", FType.INTEGER));  //  5 HEAP_SURVIVOR_USED
+    MAP_JVM.put(6,  new FInfo("hsm", FType.INTEGER));  //  6 HEAP_SURVIVOR_MAX
+    MAP_JVM.put(7,  new FInfo("htu", FType.INTEGER));  //  7 HEAP_TENURED_USED
+    MAP_JVM.put(8,  new FInfo("htm", FType.INTEGER));  //  8 HEAP_TENURED_MAX
+    MAP_JVM.put(9,  new FInfo("ccu", FType.INTEGER));  //  9 CODE_CACHE_USED
+    MAP_JVM.put(10, new FInfo("ccm", FType.INTEGER));  // 10 CODE_CACHE_MAX
+    MAP_JVM.put(11, new FInfo("lcc", FType.INTEGER));  // 11 LOADED_CLASS_COUNT
+    MAP_JVM.put(12, new FInfo("tlc", FType.INTEGER));  // 12 TOTAL_LOADED_CLASS_COUNT
+    MAP_JVM.put(13, new FInfo("ucc", FType.INTEGER));  // 13 UNLOADED_CLASS_COUNT
+    MAP_JVM.put(14, new FInfo("ttc", FType.INTEGER));  // 14 THREAD_COUNT
+    MAP_JVM.put(15, new FInfo("ptc", FType.INTEGER));  // 15 PEAK_THREAD_COUNT
+    MAP_JVM.put(16, new FInfo("stc", FType.INTEGER));  // 16 TOTAL_STARTED_THREAD_COUNT
   }
   
   public static final Map<Integer, FInfo> MAP_EVN = new HashMap<Integer, FInfo>();
   static {
-    MAP_EVN.put(0, new FInfo("d", FType.DATE));        // Date time
-    MAP_EVN.put(1, new FInfo("t", FType.STRING));      // EVENT_TYPE
-    MAP_EVN.put(2, new FInfo("a", FType.STRING));      // APPLICATION_NAME
-    MAP_EVN.put(3, new FInfo("c", FType.STRING));      // CLASS_NAME
-    MAP_EVN.put(4, new FInfo("m", FType.STRING));      // METHOD_EVENT
-    MAP_EVN.put(5, new FInfo("e", FType.INTEGER));     // ELAPSED
-    MAP_EVN.put(6, new FInfo("s", FType.INTEGER));     // RESULT_SIZE
-    MAP_EVN.put(7, new FInfo("x", FType.STRING));      // EXCEPTION
+    MAP_EVN.put(0, new FInfo("d", FType.DATE));        //  0 Date time
+    MAP_EVN.put(1, new FInfo("t", FType.STRING));      //  1 EVENT_TYPE
+    MAP_EVN.put(2, new FInfo("a", FType.STRING));      //  2 APPLICATION_NAME
+    MAP_EVN.put(3, new FInfo("c", FType.STRING));      //  3 CLASS_NAME
+    MAP_EVN.put(4, new FInfo("m", FType.STRING));      //  4 METHOD_EVENT
+    MAP_EVN.put(5, new FInfo("e", FType.INTEGER));     //  5 ELAPSED
+    MAP_EVN.put(6, new FInfo("s", FType.INTEGER));     //  6 RESULT_SIZE
+    MAP_EVN.put(7, new FInfo("x", FType.STRING));      //  7 EXCEPTION
   }
   
   public static final Map<String, Map<Integer, FInfo>> MAP_LAYOUTS = new HashMap<String, Map<Integer, FInfo>>();
@@ -63,35 +63,68 @@ class DAOMonitoring
   }
 
   public 
-  List<Map<String, Object>> findSysData(Map<String, Object> filter)
+  List<List<Object>> loadSysData(Map<String, Object> filter)
     throws Exception
   {
-    return find("wprof_sys.csv", filter);
+    return load("wprof_sys.csv", filter);
   }
   
   public 
-  List<Map<String, Object>> findJVMData(Map<String, Object> filter)
+  List<List<Object>> loadJVMData(Map<String, Object> filter)
     throws Exception
   {
-    return find("wprof_jvm.csv", filter);
+    return load("wprof_jvm.csv", filter);
   }
   
   public 
-  List<Map<String, Object>> findEventsData(Map<String, Object> filter)
+  List<List<Object>> loadEventsData(Map<String, Object> filter)
     throws Exception
   {
-    return find("wprof_evn.csv", filter);
+    return load("wprof_evn.csv", filter);
   }
   
   public 
-  List<Map<String, Object>> find(String fileName, Map<String, Object> filter)
+  Map<String, Object> layouts()
     throws Exception
   {
-    List<Map<String, Object>> listResult = new ArrayList<Map<String,Object>>();
+    Map<String,Object> mapResult = new HashMap<String, Object>();
+    
+    List<String> listSysFields = new ArrayList<String>();
+    for(int i = 0; i < MAP_SYS.size(); i++) {
+      FInfo finfo = MAP_SYS.get(i);
+      listSysFields.add(finfo != null ? finfo.name : String.valueOf(i));
+    }
+    mapResult.put("sys_fields", listSysFields);
+    
+    List<String> listJvmFields = new ArrayList<String>();
+    for(int i = 0; i < MAP_JVM.size(); i++) {
+      FInfo finfo = MAP_JVM.get(i);
+      listJvmFields.add(finfo != null ? finfo.name : String.valueOf(i));
+    }
+    mapResult.put("jvm_fields", listJvmFields);
+    
+    List<String> listEvnFields = new ArrayList<String>();
+    for(int i = 0; i < MAP_EVN.size(); i++) {
+      FInfo finfo = MAP_EVN.get(i);
+      listEvnFields.add(finfo != null ? finfo.name : String.valueOf(i));
+    }
+    mapResult.put("evn_fields", listEvnFields);
+    
+    return mapResult;
+  }
+  
+  public 
+  List<List<Object>> load(String fileName, Map<String, Object> filter)
+    throws Exception
+  {
+    List<List<Object>> listResult = new ArrayList<List<Object>>();
     
     if(fileName == null || fileName.length() == 0) {
       return listResult;
     }
+    
+    Object  filterDateTime = filter.get("d");
+    String sFilterDateTime = filterDateTime != null ? filterDateTime.toString() : "";
     
     int ext = fileName.lastIndexOf('.');
     int sep = fileName.lastIndexOf('_');
@@ -106,7 +139,6 @@ class DAOMonitoring
     }
     
     File file = checkFile(fileName);
-    
     if(file == null) return listResult;
     
     BufferedReader br = null;
@@ -117,12 +149,18 @@ class DAOMonitoring
       while((sLine = br.readLine()) != null) {
         if(sLine.trim().length() == 0) continue;
         
-        Map<String, Object> mapRow = parseRow(sLine, mapLayout);
-        if(mapRow == null || mapRow.isEmpty()) continue;
+        List<Object> listRow = parseRow(sLine, mapLayout);
+        if(listRow == null || listRow.isEmpty()) continue;
         
-        if(match(mapRow, filter)) {
-          listResult.add(mapRow);
+        if(sFilterDateTime != null && sFilterDateTime.length() > 0) {
+          Object  dateTime = listRow.get(0);
+          String sDateTime = dateTime != null ? dateTime.toString() : "";
+          if(!sDateTime.startsWith(sFilterDateTime)) {
+            continue;
+          }
         }
+        
+        listResult.add(listRow);
       }
     }
     finally {
@@ -132,230 +170,96 @@ class DAOMonitoring
     return listResult;
   }
   
-  @SuppressWarnings("unchecked")
-  protected static
-  boolean match(Map<String, Object> mapRow, Map<String, Object> filter)
-  {
-    if(filter == null || filter.isEmpty()) {
-      return true;
-    }
-    if(mapRow == null) {
-      return false;
-    }
-    
-    Iterator<Map.Entry<String, Object>> iterator = filter.entrySet().iterator();
-    while(iterator.hasNext()) {
-      Map.Entry<String, Object> entry = iterator.next();
-      
-      String sKey = entry.getKey();
-      
-      Object val  = entry.getValue();
-      String sVal = val == null ? "null" : val.toString();
-      
-      boolean boStartsWithPerc = false;
-      boolean boEndsWithPerc   = false;
-      boStartsWithPerc = sKey.startsWith("%");
-      if(boStartsWithPerc) sKey = sKey.substring(1);
-      boEndsWithPerc = sKey.endsWith("%");
-      if(boEndsWithPerc) sKey = sKey.substring(0, sKey.length()-1);
-      
-      boolean boGTE  = sKey.startsWith(">=");
-      boolean boLTE  = sKey.startsWith("<=");
-      boolean boNE   = sKey.startsWith("<>");
-      if(!boNE) boNE = sKey.startsWith("!=");
-      if(boGTE || boLTE || boNE) {
-        sKey = sKey.substring(2);
-      }
-      else {
-        boGTE  = sKey.endsWith(">=");
-        boLTE  = sKey.endsWith("<=");
-        boNE   = sKey.endsWith("<>");
-        if(!boNE) boNE = sKey.endsWith("!=");
-        if(boGTE || boLTE || boNE) {
-          sKey = sKey.substring(0, sKey.length()-2);
-        }
-      }
-      
-      boolean boGT  = sKey.startsWith(">");
-      boolean boLT  = sKey.startsWith("<");
-      if(boGT || boLT) {
-        sKey = sKey.substring(1);
-      }
-      else {
-        boGT = sKey.endsWith(">");
-        boLT = sKey.endsWith("<");
-        if(boGT || boLT) {
-          sKey = sKey.substring(0, sKey.length()-1);
-        }
-      }
-      
-      Object ivl = mapRow.get(sKey);
-      int cmp = 0;
-      if(ivl == null && val == null) {
-        cmp = 0; // equals
-      }
-      else if(ivl == null && val != null) {
-        cmp = 1;
-      }
-      else if(ivl != null && val == null) {
-        cmp = -1;
-      }
-      else if(ivl instanceof Comparable && val instanceof Comparable) {
-        cmp = ((Comparable<Object>) ivl).compareTo(val);
-      }
-      
-      if(sVal != null && !(boGTE || boLTE || boNE || boGT || boLT)) {
-        boGTE  = sVal.startsWith(">=");
-        boLTE  = sVal.startsWith("<=");
-        boNE   = sVal.startsWith("<>");
-        if(!boNE) boNE = sVal.startsWith("!=");
-        if(boGTE || boLTE || boNE) sVal = sVal.substring(2);
-        
-        boGT   = sVal.startsWith(">");
-        boLT   = sVal.startsWith("<");
-        if(boGT || boLT) sVal = sVal.substring(1);
-      }
-      
-      if(sVal.startsWith("%")) {
-        sVal = sVal.substring(1);
-        boStartsWithPerc = true;
-      }
-      if(sVal.endsWith("%")) {
-        sVal = sVal.substring(0, sVal.length()-1);
-        boEndsWithPerc = true;
-      }
-      
-      if(sVal.equals("null")) {
-        if(boNE) {
-          if(ivl == null) return false;
-        }
-        else {
-          if(ivl != null) return false;
-        }
-        continue;
-      }
-      
-      if(boNE) {
-        if(val == null && ivl == null)     return false;
-        if(val != null && val.equals(ivl)) return false;
-      }
-      else if(boGT) {
-        if(cmp < 1) return false;
-      }
-      else if(boLT) {
-        if(cmp > -1) return false;
-      }
-      else if(boGTE) {
-        if(cmp == -1) return false;
-      }
-      else if(boLTE) {
-        if(cmp == 1) return false;
-      }
-      else {
-        if(boStartsWithPerc || boEndsWithPerc) {
-          String sIvl = ivl == null ? "null" : ivl.toString();
-          if(boStartsWithPerc && boEndsWithPerc) {
-            if(sIvl.indexOf(sIvl) < 0) return false;
-          }
-          else if(boStartsWithPerc) {
-            if(!sIvl.endsWith(sVal)) return false;
-          }
-          else if(boEndsWithPerc) {
-            if(!sIvl.startsWith(sVal)) return false;
-          }
-        }
-        else {
-          if(cmp != 0) return false;
-        }
-      }
-    }
-    return true;
-  }
-  
   protected
-  Map<String,Object> parseRow(String row, Map<Integer, FInfo> mapLayout)
+  List<Object> parseRow(String row, Map<Integer, FInfo> mapLayout)
   {
     if(row == null) {
-      return new HashMap<String, Object>();
+      return new ArrayList<Object>();
     }
     row = row.trim();
     if(row.length() == 0) {
-      return new HashMap<String, Object>();
+      return new ArrayList<Object>();
     }
     
-    List<String> list = new ArrayList<String>();
+    List<Object> listResult = new ArrayList<Object>(mapLayout.size());
+    
     int iIndexOf = 0;
     int iBegin   = 0;
     iIndexOf = row.indexOf(';');
     while(iIndexOf >= 0) {
-      list.add(row.substring(iBegin, iIndexOf));
+      listResult.add(row.substring(iBegin, iIndexOf));
       iBegin = iIndexOf + 1;
       iIndexOf = row.indexOf(';', iBegin);
     }
-    list.add(row.substring(iBegin));
+    listResult.add(row.substring(iBegin));
     
-    Map<String, Object> mapResult = new HashMap<String, Object>(mapLayout.size());
-    
-    for(int i = 0; i < list.size(); i++) {
+    for(int i = 0; i < listResult.size(); i++) {
       FInfo  finfo = mapLayout.get(i);
       if(finfo == null) break;
       
-      String value = list.get(i);
+      Object value = listResult.get(i);
       FType  type = finfo.getType();
       switch (type) {
       case INTEGER:
         try {
-          mapResult.put(finfo.name, Integer.parseInt(extractNumber(value, true)));
+          listResult.set(i, Integer.parseInt(extractNumber(value, true)));
         }
         catch(Exception ex) {
-          mapResult.put(finfo.name, 0);
+          listResult.set(i, 0);
         }
         
         break;
       case DOUBLE:
         try {
-          mapResult.put(finfo.name, Double.parseDouble(extractNumber(value, false)));
+          listResult.set(i, Double.parseDouble(extractNumber(value, false)));
         }
         catch(Exception ex) {
-          mapResult.put(finfo.name, 0.0d);
+          listResult.set(i, 0.0d);
         }
         
         break;
       case BOOLEAN:
-        mapResult.put(finfo.name, toBoolean(value));
+        listResult.set(i, toBoolean(value));
         
         break;
-      case DATE:
-        mapResult.put(finfo.name, value);
-        
-        break;
-      
       default:
-        mapResult.put(finfo.name, value);
         
         break;
       }
     }
-    
-    return mapResult;
+    return listResult;
   }
   
-  protected static boolean toBoolean(String value) {
-    if(value == null || value.length() == 0) {
-      return false;
+  protected static boolean toBoolean(Object value) {
+    if(value == null) return false;
+    if(value instanceof Boolean) {
+      return ((Boolean) value).booleanValue();
     }
-    char c0 = value.charAt(0);
-    return "1TYSJtysj".indexOf(c0) >= 0;
+    if(value instanceof Number) {
+      return ((Number) value).intValue() != 0;
+    }
+    if(value instanceof String) {
+      String sValue = (String) value;
+      if(sValue.length() == 0) return false;
+      char c0 = sValue.charAt(0);
+      return "1TYSJtysj".indexOf(c0) >= 0;
+    }
+    return false;
   }
   
-  protected static String extractNumber(String value, boolean expectedInteger) {
-    if(value == null || value.length() == 0) {
+  protected static String extractNumber(Object value, boolean expectedInteger) {
+    if(value == null) return "0";
+    if(value instanceof Number) {
+      return value.toString();
+    }
+    String sValue = value.toString();
+    if(sValue == null || sValue.length() == 0) {
       return "0";
     }
-    value = value.trim();
+    sValue = sValue.trim();
     StringBuilder sb = new StringBuilder();
-    for(int i = 0; i < value.length(); i++) {
-      char c = value.charAt(i);
+    for(int i = 0; i < sValue.length(); i++) {
+      char c = sValue.charAt(i);
       if(c == '-') {
         if(sb.length() != 0) break;
         sb.append(c);

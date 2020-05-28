@@ -639,6 +639,9 @@ declare namespace WUX {
         constructor(id: string, type?: 'line' | 'bar' | 'pie' | 'doughnut' | 'polarArea', classStyle?: string, style?: string | WStyle, attributes?: string | object);
         get options(): Chart.ChartOptions;
         set options(o: Chart.ChartOptions);
+        onClickChart(h: (e: WEvent) => any): void;
+        getLabel(e: WUX.WEvent): string;
+        getValue(e: WUX.WEvent): number;
         protected componentDidMount(): void;
         protected buildChart(): void;
     }
