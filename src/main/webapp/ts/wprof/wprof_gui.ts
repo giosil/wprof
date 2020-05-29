@@ -60,17 +60,24 @@
     export class GUIAnalyze extends WUX.WComponent<string, WProfData> {
         cnt: WUX.WContainer;
         sel: WUX.WSelect;
+        sfh: WUX.WSelect;
+        sth: WUX.WSelect;
         frm: WUX.WFormPanel;
         lbl: WUX.WLabel;
         chr: WUX.WChartJS;
         tbl: WUX.WTable;
 
         title: string;
+        frh: string;
+        toh: string;
         dlg: DlgEvents;
 
         constructor(id?: string) {
             super(id ? id : '*', 'GUIAnalyze', '');
             this.state = WP.getData();
+
+            this.frh = '00:00:00';
+            this.toh = '24:00:00';
 
             this.dlg = new DlgEvents(this.subId('dlg'));
             this.dlg.onHiddenModal((e: JQueryEventObject) => {
@@ -97,23 +104,51 @@
             opt.push({ id: 'jvm_15', text: 'Peak Thread count' });
             opt.push({ id: 'jvm_16', text: 'Total Started Thread count' });
 
+            let hhmm: WUX.WEntity[] = [];
+            for (let h = 0; h < 24; h++) {
+                let hh = h < 10 ? '0' + h : '' + h;
+                for (let m = 0; m < 60; m += 15) {
+                    let mm = m < 10 ? '0' + m : '' + m;
+                    hhmm.push({ id: hh + ':' + mm + ':00', text: hh + ':' + mm });
+                }
+            }
+            hhmm.push({ id: '24:00:00', text: '24:00' });
+
             if (!this.state) this.state = { msg: "No data", evn: [], sys: [], jvm: [] };
             if (!this.props) {
                 this.props = opt[0].id;
                 this.title = opt[0].text;
             }
 
-            this.sel = new WUX.WSelect('sel', opt);
+            this.sel = new WUX.WSelect('sel', opt, false, 'form-control');
+            this.sel.setState(this.props);
             this.sel.on('statechange', (e: WUX.WEvent) => {
-                this.title = this.sel.getProps();
-                this.updateProps(this.sel.getState());
+
+                this.refresh();
+
+            });
+
+            this.sfh = new WUX.WSelect('frh', hhmm, false, 'form-control');
+            this.sfh.setState('00:00:00');
+            this.sfh.on('statechange', (e: WUX.WEvent) => {
+
+                this.refresh();
+
+            });
+
+            this.sth = new WUX.WSelect('toh', hhmm, false, 'form-control');
+            this.sth.setState('24:00:00');
+            this.sth.on('statechange', (e: WUX.WEvent) => {
+
+                this.refresh();
+
             });
 
             this.frm = new WUX.WFormPanel(this.subId('frm'));
             this.frm.addRow();
             this.frm.addComponent('sel', 'Select', this.sel);
-            this.frm.addBlankField();
-            this.frm.addBlankField();
+            this.frm.addComponent('frh', 'From time', this.sfh);
+            this.frm.addComponent('toh', 'To time', this.sth);
 
             this.lbl = new WUX.WLabel(this.subId('lbl'), this.state.msg, WUX.WIcon.WARNING, '', WUX.CSS.LABEL_NOTICE);
 
@@ -138,7 +173,7 @@
                 ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception'],
             );
             this.tbl.selectionMode = 'single';
-            this.tbl.setState(this.state.evn);
+            this.tbl.setState(this.getAllEvents());
 
             this.cnt = new WUX.WContainer();
             this.cnt
@@ -162,15 +197,24 @@
             return this.cnt;
         }
 
+        refresh(): this {
+            let f = this.frm.getState();
+            this.frh = WUtil.getString(f, 'frh');
+            this.toh = WUtil.getString(f, 'toh');
+            this.title = this.sel.getProps();
+            this.updateProps(this.sel.getState());
+            return this;
+        }
+
         protected updateProps(nextProps: string): void {
             super.updateProps(nextProps);
             if (!this.mounted) return;
             this.chr.setState(this.getChartData());
+            this.tbl.setState(this.getAllEvents());
         }
 
         protected getChartData() {
             let r: WUX.WChartData = {};
-
             let df = this.props.split('_');
             if (!df || df.length < 2) return r;
             let a = WUtil.toArray(this.state[df[0]]);
@@ -184,6 +228,10 @@
                 let o = a[i];
                 let l = WUtil.toString(o[0]);
                 let v = o[y];
+
+                let h = this.getTime(l);
+                if (h < this.frh) continue;
+                if (h > this.toh) break;
 
                 labels.push(l);
                 values.push(v);
@@ -215,6 +263,40 @@
             let s = e - max;
             if (s < 0) s = 0;
             return this.state.evn.slice(s, e);
+        }
+
+        protected getAllEvents(): any[] {
+            let minh = !this.frh || this.frh == '00:00:00';
+            let maxh = !this.toh || this.toh == '24:00:00';
+            if (minh && maxh) {
+                return this.state.evn;
+            }
+
+            let l = this.state.evn.length;
+            if (l == 0) return [];
+
+            let s = -1;
+            let e = -1;
+            for (let i = 0; i < l; i++) {
+                let o = this.state.evn[i];
+                let h = this.getTime(o[0]);
+
+                if (h < this.frh) continue;
+                if (h > this.toh) break;
+
+                if (s < 0) s = i;
+                e = i;
+            }
+
+            if (s < 0) return [];
+            return this.state.evn.slice(s, e);
+        }
+
+        protected getTime(dt: string): string {
+            if (!dt) return "00:00:00";
+            let s = dt.indexOf(' ');
+            if (s <= 0) return "00:00:00";
+            return dt.substring(s + 1);
         }
     }
 
