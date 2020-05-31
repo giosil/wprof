@@ -4,16 +4,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dew.wprof.util.TimerTaskRecorder;
+
 public 
 class DAOMonitoring 
 {
-  public static final String FOLDER_PATH = System.getProperty("user.home") + File.separator;
-  
   public static final Map<Integer, FInfo> MAP_SYS = new HashMap<Integer, FInfo>();
   static {
     MAP_SYS.put(0, new FInfo("d",   FType.DATE));      //  0 Date time
@@ -66,21 +67,21 @@ class DAOMonitoring
   List<List<Object>> loadSysData(Map<String, Object> filter)
     throws Exception
   {
-    return load("wprof_sys.csv", filter);
+    return load(TimerTaskRecorder.SYS_FILE_PATH, filter);
   }
   
   public 
   List<List<Object>> loadJVMData(Map<String, Object> filter)
     throws Exception
   {
-    return load("wprof_jvm.csv", filter);
+    return load(TimerTaskRecorder.JVM_FILE_PATH, filter);
   }
   
   public 
   List<List<Object>> loadEventsData(Map<String, Object> filter)
     throws Exception
   {
-    return load("wprof_evn.csv", filter);
+    return load(TimerTaskRecorder.EVN_FILE_PATH, filter);
   }
   
   public 
@@ -114,31 +115,31 @@ class DAOMonitoring
   }
   
   public 
-  List<List<Object>> load(String fileName, Map<String, Object> filter)
+  List<List<Object>> load(String filePath, Map<String, Object> filter)
     throws Exception
   {
     List<List<Object>> listResult = new ArrayList<List<Object>>();
     
-    if(fileName == null || fileName.length() == 0) {
+    if(filePath == null || filePath.length() == 0) {
       return listResult;
     }
     
     Object  filterDateTime = filter.get("d");
     String sFilterDateTime = filterDateTime != null ? filterDateTime.toString() : null;
     
-    int ext = fileName.lastIndexOf('.');
-    int sep = fileName.lastIndexOf('_');
+    int ext = filePath.lastIndexOf('.');
+    int sep = filePath.lastIndexOf('_');
     if(sep < 0) {
       return listResult;
     }
-    String type = ext > sep ? fileName.substring(sep + 1, ext) : fileName.substring(sep + 1);
+    String type = ext > sep ? filePath.substring(sep + 1, ext) : filePath.substring(sep + 1);
     
     Map<Integer, FInfo> mapLayout = MAP_LAYOUTS.get(type.toLowerCase());
     if(mapLayout == null || mapLayout.isEmpty()) {
       return listResult;
     }
     
-    File file = checkFile(fileName);
+    File file = checkFile(filePath);
     if(file == null) return listResult;
     
     BufferedReader br = null;
@@ -277,9 +278,9 @@ class DAOMonitoring
   }
   
   protected
-  File checkFile(String fileName)
+  File checkFile(String filePath)
   {
-    File file = new File(FOLDER_PATH + fileName);
+    File file = new File(filePath);
     if(file.exists()) {
       return file;
     }
