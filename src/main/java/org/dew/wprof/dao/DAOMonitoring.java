@@ -139,8 +139,8 @@ class DAOMonitoring
       return listResult;
     }
     
-    File file = checkFile(filePath);
-    if(file == null) return listResult;
+    File file = new File(filePath);
+    if(!file.exists()) return listResult;
     
     BufferedReader br = null;
     try {
@@ -188,11 +188,11 @@ class DAOMonitoring
     int iBegin   = 0;
     iIndexOf = row.indexOf(';');
     while(iIndexOf >= 0) {
-      listResult.add(row.substring(iBegin, iIndexOf));
+      listResult.add(row.substring(iBegin, iIndexOf).trim());
       iBegin = iIndexOf + 1;
       iIndexOf = row.indexOf(';', iBegin);
     }
-    listResult.add(row.substring(iBegin));
+    listResult.add(row.substring(iBegin).trim());
     
     for(int i = 0; i < listResult.size(); i++) {
       FInfo  finfo = mapLayout.get(i);
@@ -275,16 +275,6 @@ class DAOMonitoring
     }
     if(sb.length() == 0) sb.append('0');
     return sb.toString();
-  }
-  
-  protected
-  File checkFile(String filePath)
-  {
-    File file = new File(filePath);
-    if(file.exists()) {
-      return file;
-    }
-    return null;
   }
   
   protected static 
