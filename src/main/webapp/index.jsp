@@ -11,7 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <title>WMon</title>
+  <title>WProf</title>
   
   <link href="css/bootstrap.min.css" rel="stylesheet">
   
@@ -32,7 +32,7 @@
   <div class="container">
     <div class="starter-template" id="view-root">
       
-      <h1>WMon</h1>
+      <h1>WProf</h1>
       
       <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover" id="tabResult">
