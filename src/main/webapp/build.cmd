@@ -16,4 +16,3 @@ call minify ./wux/js/wprof.js
 
 rem Install first https://www.npmjs.com/package/uglify-js
 rem uglifyjs -c -o ./wux/js/wux.min.js -m -- ./wux/js/wux.js
-rem uglifyjs -c -o ./wux/js/cloudfarma.min.js -m -- ./wux/js/cloudfarma.js
