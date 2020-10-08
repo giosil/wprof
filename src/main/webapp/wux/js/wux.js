@@ -220,7 +220,7 @@ var WUX;
                         this.root.hide();
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WComponent.prototype, "enabled", {
@@ -236,7 +236,7 @@ var WUX;
                 if (this.root && this.root.length)
                     this.root.prop('disabled', !this._enabled);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WComponent.prototype, "style", {
@@ -252,7 +252,7 @@ var WUX;
                 if (this.root && this.root.length)
                     this.root.attr('style', this._style);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WComponent.prototype, "classStyle", {
@@ -295,7 +295,7 @@ var WUX;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WComponent.prototype, "attributes", {
@@ -309,7 +309,7 @@ var WUX;
                 if (this.internal)
                     this.internal.attributes = s;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WComponent.prototype, "tooltip", {
@@ -325,7 +325,7 @@ var WUX;
                 if (this.root && this.root.length)
                     this.root.attr('title', this._tooltip);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WComponent.prototype.css = function () {
@@ -3211,7 +3211,7 @@ var WUX;
                     this._opset = false;
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WChartJS.prototype.onClickChart = function (h) {
@@ -3872,7 +3872,7 @@ var WUX;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WBox.prototype.addTool = function (tool, icon, attributes, handler) {
@@ -3928,14 +3928,14 @@ var WUX;
                     return this._header;
                 return this._header = new WContainer('', WUX.cls(WUX.global.box_header, this._addClassStyle));
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WBox.prototype, "content", {
             get: function () {
                 return this;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WBox.prototype, "footer", {
@@ -3944,7 +3944,7 @@ var WUX;
                     return this._footer;
                 return this._footer = new WContainer('', WUX.cls(WUX.global.box_footer, this._addClassStyle));
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WBox.prototype.componentDidMount = function () {
@@ -4075,7 +4075,7 @@ var WUX;
                 this.cntHeader.add(this.btnCloseHeader);
                 return this.cntHeader;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WDialog.prototype, "body", {
@@ -4085,7 +4085,7 @@ var WUX;
                 this.cntBody = new WContainer('', WUX.cls('modal-body', this._classStyle), '', this._attributes);
                 return this.cntBody;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WDialog.prototype, "footer", {
@@ -4095,7 +4095,7 @@ var WUX;
                 this.cntFooter = new WContainer('', 'modal-footer');
                 return this.cntFooter;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WDialog.prototype, "title", {
@@ -4112,7 +4112,7 @@ var WUX;
                     this.header.add(this.buildTitle(s));
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WDialog.prototype.onClickOk = function () {
@@ -4283,7 +4283,7 @@ var WUX;
             set: function (i) {
                 this.update(i, this.state, true, false, false);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WLabel.prototype.updateState = function (nextState) {
@@ -4523,7 +4523,7 @@ var WUX;
                 if (this.mounted)
                     this.root.html(s);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WCheck.prototype, "checked", {
@@ -4535,7 +4535,7 @@ var WUX;
             set: function (b) {
                 this.setProps(b);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WCheck.prototype.getState = function () {
@@ -4612,7 +4612,7 @@ var WUX;
             set: function (i) {
                 this.update(i, this.state, true, false, false);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WButton.prototype.setText = function (text, icon) {
@@ -4667,7 +4667,7 @@ var WUX;
             set: function (s) {
                 this.update(s, this.state, true, false, false);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WLink.prototype, "href", {
@@ -4685,7 +4685,7 @@ var WUX;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WLink.prototype, "target", {
@@ -4703,7 +4703,7 @@ var WUX;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WLink.prototype.render = function () {
@@ -5002,7 +5002,7 @@ var WUX;
                         $item.attr('title', this._tooltip);
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WRadio.prototype.select = function (i) {
@@ -5797,7 +5797,7 @@ var WUX;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WFormPanel.prototype.setEnabled = function (fieldId, enabled) {
@@ -6373,7 +6373,7 @@ var WUX;
             var _loop_2 = function (fid) {
                 var minDate = WUX.WUtil.getDate(this_2.minValues, fid);
                 $('#' + fid).datepicker({
-                    language: 'it',
+                    language: WUX.global.locale,
                     todayBtn: 'linked',
                     keyboardNavigation: false,
                     forceParse: false,
@@ -6883,7 +6883,7 @@ var WUX;
                 this.cntHeader.add(this.btnCloseHeader);
                 return this.cntHeader;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WWindow.prototype, "body", {
@@ -6893,7 +6893,7 @@ var WUX;
                 this.cntBody = new WContainer('', WUX.cls(this._classStyle));
                 return this.cntBody;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WWindow.prototype, "container", {
@@ -6931,7 +6931,7 @@ var WUX;
                 this.cntRoot = new WContainer(this.id, this._classStyle, crs, this._attributes);
                 return this.cntRoot;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(WWindow.prototype, "title", {
@@ -6948,7 +6948,7 @@ var WUX;
                     this.header.add(this.buildTitle(s));
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         WWindow.prototype.show = function (parent) {

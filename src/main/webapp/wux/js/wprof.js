@@ -78,6 +78,8 @@ var WP;
         function GUIAnalyze(id) {
             var _this = _super.call(this, id ? id : '*', 'GUIAnalyze', '') || this;
             _this.state = WP.getData();
+            _this.frh = '00:00:00';
+            _this.toh = '24:00:00';
             _this.dlg = new DlgEvents(_this.subId('dlg'));
             _this.dlg.onHiddenModal(function (e) {
                 $(window).scrollTop(0);
@@ -101,22 +103,41 @@ var WP;
             opt.push({ id: 'jvm_14', text: 'Thread count' });
             opt.push({ id: 'jvm_15', text: 'Peak Thread count' });
             opt.push({ id: 'jvm_16', text: 'Total Started Thread count' });
+            var hhmm = [];
+            for (var h = 0; h < 24; h++) {
+                var hh = h < 10 ? '0' + h : '' + h;
+                for (var m = 0; m < 60; m += 15) {
+                    var mm = m < 10 ? '0' + m : '' + m;
+                    hhmm.push({ id: hh + ':' + mm + ':00', text: hh + ':' + mm });
+                }
+            }
+            hhmm.push({ id: '24:00:00', text: '24:00' });
             if (!this.state)
                 this.state = { msg: "No data", evn: [], sys: [], jvm: [] };
             if (!this.props) {
                 this.props = opt[0].id;
                 this.title = opt[0].text;
             }
-            this.sel = new WUX.WSelect('sel', opt);
+            this.sel = new WUX.WSelect('sel', opt, false, 'form-control');
+            this.sel.setState(this.props);
             this.sel.on('statechange', function (e) {
-                _this.title = _this.sel.getProps();
-                _this.updateProps(_this.sel.getState());
+                _this.refresh();
+            });
+            this.sfh = new WUX.WSelect('frh', hhmm, false, 'form-control');
+            this.sfh.setState('00:00:00');
+            this.sfh.on('statechange', function (e) {
+                _this.refresh();
+            });
+            this.sth = new WUX.WSelect('toh', hhmm, false, 'form-control');
+            this.sth.setState('24:00:00');
+            this.sth.on('statechange', function (e) {
+                _this.refresh();
             });
             this.frm = new WUX.WFormPanel(this.subId('frm'));
             this.frm.addRow();
             this.frm.addComponent('sel', 'Select', this.sel);
-            this.frm.addBlankField();
-            this.frm.addBlankField();
+            this.frm.addComponent('frh', 'From time', this.sfh);
+            this.frm.addComponent('toh', 'To time', this.sth);
             this.lbl = new WUX.WLabel(this.subId('lbl'), this.state.msg, WUX.WIcon.WARNING, '', WUX.CSS.LABEL_NOTICE);
             this.chr = new WUX.WChartJS(this.subId('chr'), 'line');
             this.chr.setState(this.getChartData());
@@ -135,7 +156,7 @@ var WP;
             });
             this.tbl = new WUX.WTable(this.subId('tbl'), ['Date time', 'Type', 'Application', 'Class', 'Method', 'Elapsed', 'Size', 'Exception']);
             this.tbl.selectionMode = 'single';
-            this.tbl.setState(this.state.evn);
+            this.tbl.setState(this.getAllEvents());
             this.cnt = new WUX.WContainer();
             this.cnt
                 .addRow()
@@ -156,11 +177,20 @@ var WP;
                 .add(this.tbl);
             return this.cnt;
         };
+        GUIAnalyze.prototype.refresh = function () {
+            var f = this.frm.getState();
+            this.frh = WUtil.getString(f, 'frh');
+            this.toh = WUtil.getString(f, 'toh');
+            this.title = this.sel.getProps();
+            this.updateProps(this.sel.getState());
+            return this;
+        };
         GUIAnalyze.prototype.updateProps = function (nextProps) {
             _super.prototype.updateProps.call(this, nextProps);
             if (!this.mounted)
                 return;
             this.chr.setState(this.getChartData());
+            this.tbl.setState(this.getAllEvents());
         };
         GUIAnalyze.prototype.getChartData = function () {
             var r = {};
@@ -178,6 +208,11 @@ var WP;
                 var o = a[i];
                 var l = WUtil.toString(o[0]);
                 var v = o[y];
+                var h = this.getTime(l);
+                if (h < this.frh)
+                    continue;
+                if (h > this.toh)
+                    break;
                 labels.push(l);
                 values.push(v);
             }
@@ -207,6 +242,40 @@ var WP;
             if (s < 0)
                 s = 0;
             return this.state.evn.slice(s, e);
+        };
+        GUIAnalyze.prototype.getAllEvents = function () {
+            var minh = !this.frh || this.frh == '00:00:00';
+            var maxh = !this.toh || this.toh == '24:00:00';
+            if (minh && maxh) {
+                return this.state.evn;
+            }
+            var l = this.state.evn.length;
+            if (l == 0)
+                return [];
+            var s = -1;
+            var e = -1;
+            for (var i = 0; i < l; i++) {
+                var o = this.state.evn[i];
+                var h = this.getTime(o[0]);
+                if (h < this.frh)
+                    continue;
+                if (h > this.toh)
+                    break;
+                if (s < 0)
+                    s = i;
+                e = i;
+            }
+            if (s < 0)
+                return [];
+            return this.state.evn.slice(s, e);
+        };
+        GUIAnalyze.prototype.getTime = function (dt) {
+            if (!dt)
+                return "00:00:00";
+            var s = dt.indexOf(' ');
+            if (s <= 0)
+                return "00:00:00";
+            return dt.substring(s + 1);
         };
         return GUIAnalyze;
     }(WUX.WComponent));

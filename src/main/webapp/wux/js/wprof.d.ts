@@ -23,16 +23,23 @@ declare namespace WP {
     class GUIAnalyze extends WUX.WComponent<string, WProfData> {
         cnt: WUX.WContainer;
         sel: WUX.WSelect;
+        sfh: WUX.WSelect;
+        sth: WUX.WSelect;
         frm: WUX.WFormPanel;
         lbl: WUX.WLabel;
         chr: WUX.WChartJS;
         tbl: WUX.WTable;
         title: string;
+        frh: string;
+        toh: string;
         dlg: DlgEvents;
         constructor(id?: string);
         protected render(): WUX.WContainer;
+        refresh(): this;
         protected updateProps(nextProps: string): void;
         protected getChartData(): WUX.WChartData;
         protected getEvents(d: string, max?: number): any[];
+        protected getAllEvents(): any[];
+        protected getTime(dt: string): string;
     }
 }
