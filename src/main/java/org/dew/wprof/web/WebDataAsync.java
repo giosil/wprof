@@ -64,8 +64,8 @@ class WebDataAsync extends HttpServlet
     asyncContext.start(jobEvnData);
     
     // Wait for all jobs are completed
-    int jobAborted = AsyncUtils.waitForAllJobsAreCompleted(jobSysData, jobJvmData, jobEvnData);
-    System.out.println("AsyncUtils.waitForAllJobsAreCompleted -> " + jobAborted);
+    int jobsAborted = AsyncUtils.waitForAllJobsAreCompleted(jobSysData, jobJvmData, jobEvnData);
+    System.out.println("AsyncUtils.waitForAllJobsAreCompleted -> " + jobsAborted);
     
     // Collect data
     Map<String, Object> mapData = new HashMap<String, Object>();
