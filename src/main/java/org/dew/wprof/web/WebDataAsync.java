@@ -21,7 +21,7 @@ import org.dew.wprof.dao.DAOMonitoring;
 import org.dew.wprof.util.JSONUtils;
 import org.dew.wprof.util.WebUtil;
 
-@WebServlet(name = "WebDataAsync", loadOnStartup = 0, urlPatterns = { "/dataAsync.js" })
+@WebServlet(name = "WebDataAsync", loadOnStartup = 0, asyncSupported = true, urlPatterns = { "/dataAsync.js" })
 public 
 class WebDataAsync extends HttpServlet
 {
