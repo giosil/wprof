@@ -29,43 +29,43 @@ class AsyncUtils
   }
   
   public static 
-  int waitForAllJobsAreCompleted(AAsyncJob... jobs) 
+  int waitForAllJobsAreCompleted(AAsyncJob<?>... jobs) 
   {
-    return waitForAllJobsAreCompleted(200, DEFAULT_JOB_TIMEOUT_MILLIS, jobs);
+    return waitForAllJobsAreCompleted(250, DEFAULT_JOB_TIMEOUT_MILLIS, jobs);
   }
   
   public static 
-  int waitForAllJobsAreCompleted(int timeoutMillis, AAsyncJob... jobs) 
+  int waitForAllJobsAreCompleted(int timeoutMillis, AAsyncJob<?>... jobs) 
   {
-    return waitForAllJobsAreCompleted(200, timeoutMillis, jobs);
+    return waitForAllJobsAreCompleted(250, timeoutMillis, jobs);
   }
   
   public static 
-  int waitForAllJobsAreCompleted(int checkEveryMillis, int timeoutMillis, AAsyncJob... jobs) 
+  int waitForAllJobsAreCompleted(int checkEveryMillis, int timeoutMillis, AAsyncJob<?>... jobs) 
   {
     // The result is count of job completed with error.
     int result = 0;
     int elasped = 0;
     boolean allCompleted = false;
     while(!allCompleted){
+      try {
+        Thread.sleep(checkEveryMillis);
+        elasped += checkEveryMillis;
+      }
+      catch(Exception ignore) {
+      }
+      
       result = 0;
       allCompleted = true;
       for(int i = 0; i < jobs.length; i++) {
-        AAsyncJob job = jobs[i];
-        if(job == null || !job.isRunning()) continue;
+        AAsyncJob<?> job = jobs[i];
+        if(job == null) continue;
         if(job.isCompleted()) {
           result += job.isSuccess() ? 0 : 1;
         }
         else {
           allCompleted = false;
         }
-      }
-      
-      try {
-        Thread.sleep(checkEveryMillis);
-        elasped += checkEveryMillis;
-      }
-      catch(Exception ignore) {
       }
       
       if(timeoutMillis > 0 && elasped > timeoutMillis) {

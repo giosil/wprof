@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.AsyncContext;
@@ -39,20 +40,20 @@ class WebDataAsync extends HttpServlet
     asyncContext.setTimeout(0);
     
     // Create Jobs (Runnable)
-    AAsyncJob jobSysData = new AAsyncJob("sys", asyncContext, parameters, true) {
-      public Object execute() throws Exception {
+    AAsyncJob<List<List<Object>>> jobSysData = new AAsyncJob<List<List<Object>>>("sys", asyncContext, parameters, true) {
+      public List<List<Object>> execute() throws Exception {
         DAOMonitoring daoMonitoring = new DAOMonitoring();
         return daoMonitoring.loadSysData(parameters);
       }
     };
-    AAsyncJob jobJvmData = new AAsyncJob("jvm", asyncContext, parameters, true) {
-      public Object execute() throws Exception {
+    AAsyncJob<List<List<Object>>> jobJvmData = new AAsyncJob<List<List<Object>>>("jvm", asyncContext, parameters, true) {
+      public List<List<Object>> execute() throws Exception {
         DAOMonitoring daoMonitoring = new DAOMonitoring();
         return daoMonitoring.loadJVMData(parameters);
       }
     };
-    AAsyncJob jobEvnData = new AAsyncJob("evn", asyncContext, parameters, true) {
-      public Object execute() throws Exception {
+    AAsyncJob<List<List<Object>>> jobEvnData = new AAsyncJob<List<List<Object>>>("evn", asyncContext, parameters, true) {
+      public List<List<Object>> execute() throws Exception {
         DAOMonitoring daoMonitoring = new DAOMonitoring();
         return daoMonitoring.loadEventsData(parameters);
       }

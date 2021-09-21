@@ -6,13 +6,13 @@ import java.util.Map;
 import javax.servlet.AsyncContext;
 
 public abstract
-class AAsyncJob implements Runnable 
+class AAsyncJob<R> implements Runnable 
 {
   protected String name;
   protected Map<String, Object> parameters;
   protected boolean debug;
   
-  protected Object    output;
+  protected R output;
   protected Exception error;
   
   protected boolean running   = false;
@@ -77,11 +77,11 @@ class AAsyncJob implements Runnable
     this.debug = debug;
   }
 
-  public Object getOutput() {
+  public R getOutput() {
     return output;
   }
   
-  public void setOutput(Object output) {
+  public void setOutput(R output) {
     this.output = output;
   }
   
@@ -177,5 +177,5 @@ class AAsyncJob implements Runnable
     System.err.println(message);
   }
   
-  public abstract Object execute() throws Exception;
+  public abstract R execute() throws Exception;
 }
