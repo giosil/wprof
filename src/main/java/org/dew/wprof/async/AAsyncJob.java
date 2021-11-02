@@ -109,6 +109,14 @@ class AAsyncJob<R> implements Runnable
     this.elapsed = elapsed;
   }
   
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public 
   void start(Map<String, Object> parameters)
     throws Exception
