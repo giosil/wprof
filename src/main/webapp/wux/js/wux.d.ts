@@ -607,10 +607,10 @@ declare namespace WUX {
         WRENCH = "fa-wrench"
     }
     class RES {
-        static readonly OK = "OK";
-        static readonly CLOSE = "Chiudi";
-        static readonly CANCEL = "Annulla";
-        static readonly ERR_DATE = "Data non ammessa.";
+        static OK: string;
+        static CLOSE: string;
+        static CANCEL: string;
+        static ERR_DATE: string;
     }
 }
 declare namespace WUX {
@@ -787,7 +787,7 @@ declare namespace WUX {
     class WLabel extends WComponent<string, string> {
         forId: string;
         protected blinks: number;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object);
         get icon(): string;
         set icon(i: string);
         protected updateState(nextState: string): void;
@@ -835,7 +835,7 @@ declare namespace WUX {
     }
     class WButton extends WComponent<string, string> {
         readonly type: string;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, type?: string);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, type?: string);
         get icon(): string;
         set icon(i: string);
         setText(text?: string, icon?: string): void;
@@ -846,7 +846,7 @@ declare namespace WUX {
     class WLink extends WComponent<string, string> {
         protected _href: string;
         protected _target: string;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, href?: string, target?: string);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, href?: string, target?: string);
         get icon(): string;
         set icon(s: string);
         get href(): string;
@@ -859,7 +859,7 @@ declare namespace WUX {
     }
     class WTab extends WComponent<any, number> {
         tabs: WContainer[];
-        constructor(id: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
+        constructor(id?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
         addTab(title: string, icon?: string): WContainer;
         protected render(): string;
         protected componentDidUpdate(prevProps: any, prevState: any): void;
@@ -869,7 +869,7 @@ declare namespace WUX {
     class WSelect extends WComponent implements WISelectable {
         options: Array<string | WEntity>;
         multiple: boolean;
-        constructor(id: string, options?: Array<string | WEntity>, multiple?: boolean, classStyle?: string, style?: string | WStyle, attributes?: string | object);
+        constructor(id?: string, options?: Array<string | WEntity>, multiple?: boolean, classStyle?: string, style?: string | WStyle, attributes?: string | object);
         getProps(): any;
         select(i: number): this;
         addOption(e: string | WEntity, sel?: boolean): this;
@@ -883,7 +883,7 @@ declare namespace WUX {
     class WRadio extends WComponent implements WISelectable {
         options: Array<string | WEntity>;
         label: string;
-        constructor(id: string, options: Array<string | WEntity>, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
+        constructor(id?: string, options?: Array<string | WEntity>, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
         set tooltip(s: string);
         select(i: number): this;
         protected render(): string;
@@ -1001,6 +1001,7 @@ declare namespace WUX {
         stateChangeOnBlur: boolean;
         nextOnEnter: boolean;
         inputClass: string;
+        checkboxStyle: string;
         nextMap: {
             [fid: string]: string;
         };
