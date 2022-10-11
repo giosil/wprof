@@ -1,5 +1,7 @@
 @echo off
 
+cd src\main\webapp
+
 echo Clean wux folder..
 del /Q .\wux\*.*
 
