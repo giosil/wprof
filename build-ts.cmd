@@ -17,4 +17,6 @@ call minify ./wux/js/wux.js
 call minify ./wux/js/wprof.js
 
 rem Install first https://www.npmjs.com/package/uglify-js
-rem uglifyjs -c -o ./wux/js/wux.min.js -m -- ./wux/js/wux.js
+rem Usage: uglifyjs input_file -c (compress) -o (output_file) output_file
+rem call uglifyjs ./wux/js/wux.js -c -o ./wux/js/wux.min.js
+rem call uglifyjs ./wux/js/wprof.js -c -o ./wux/js/wprof.min.js
