@@ -6,14 +6,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class TestWMon extends TestCase {
+public class TestWProf extends TestCase {
   
-  public TestWMon(String testName) {
+  public TestWProf(String testName) {
     super(testName);
   }
   
   public static Test suite() {
-    return new TestSuite(TestWMon.class);
+    return new TestSuite(TestWProf.class);
   }
   
   public void testApp() throws Exception {
